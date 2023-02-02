@@ -1,8 +1,9 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export default function useAuth() {
+  // const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const [error, setError] = useState(null);
   //set user in context and push them home
@@ -17,7 +18,10 @@ export default function useAuth() {
     });
 
     const data = await resp.json();
-    if(resp.ok) actions.storeUser(data);
+    if(resp.ok) {
+      actions.storeUser(data);
+      // navigate('/private');
+    }
 
     // return await axios
     //   .get("/user")

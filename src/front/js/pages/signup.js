@@ -32,9 +32,9 @@ export const Signup = () => {
       // console.log(resp.text());
       const data = await resp.json();
       console.log(data);
-      if (resp.ok) setResult(data.result);
       setLoading(false);
-      alert(`Something went wrong`);
+      if (resp.ok) setResult(data.result);
+      else alert(`Something went wrong: ${data.msg}`);
     } catch(e){
       console.log(e);
       setLoading(false);

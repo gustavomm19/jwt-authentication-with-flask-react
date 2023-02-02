@@ -58,43 +58,6 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-@app.route('/user', methods=['POST'])
-def register_user():
-
-    data = request.json
-    user = User(email=data['email'], password=data['password'], is_active=True)
-    db.session.add(user)
-    db.session.commit()
-
-    response_body = {
-        'result': user.serialize()
-    }
-
-    return jsonify(response_body), 201
-
-@app.route("/token", methods=["POST"])
-def create_token():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    # Query your database for username and password
-    user = User.query.filter_by(email=email, password=password).first()
-    if user is None:
-        # the user was not found on the database
-        return jsonify({"msg": "Bad email or password"}), 401
-    
-    # create a new token with the user id inside
-    access_token = create_access_token(identity=user.id)
-    return jsonify({ "token": access_token, "user_id": user.id })
-
-@app.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    
-    return jsonify({"id": user.id, "email": user.email }), 200
-
 # any other endpoint will try to serve it like a static file
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):

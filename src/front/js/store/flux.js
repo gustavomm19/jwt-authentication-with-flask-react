@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       message: null,
       token: null,
       user: null,
+      isInitialized: false,
       demo: [
         {
           title: "FIRST",
@@ -54,7 +55,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       storeUser: (user) => {
         setStore({ user });
-      }
+      },
+      setInitialized: (isInitialized) => {
+        setStore({ isInitialized });
+      },
     },
   };
 };

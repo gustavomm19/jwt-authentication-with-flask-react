@@ -19,7 +19,7 @@ import PrivateRoute from "./pages/privateRoute";
 //create your first component
 const Layout = () => {
   const { store, actions } = useContext(Context);
-  const { setUserContext } = useAuth();
+  const { setUserContext, isLoading } = useAuth();
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
   // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
   const basename = process.env.BASENAME || "";
@@ -28,12 +28,16 @@ const Layout = () => {
     if (token && token !== "") {
       actions.storeToken(token);
       await setUserContext();
+    } else {
+      actions.setInitialized(true);
     }
   };
 
   useEffect(() => {
     getUser();
   }, []);
+
+  if (!store.isInitialized) return (<p>...Loading</p>)
 
   return (
     <div>
